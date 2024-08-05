@@ -3,7 +3,9 @@ import {processManager} from "../../index"
 
 module.exports = {
     name: "add_bot",
-    Callback: (args: {userid: string, token: string}, socket: Socket) => {
-        processManager.addBot(args.userid, args.token)
+    Callback: async (args: {userid: string, token: string}, socket: Socket) => {
+       await processManager.addBot(args.userid, args.token)
+        let e = await processManager.startBot(args.userid)
+     
     }
 }

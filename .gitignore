@@ -1,2 +1,4 @@
 node_modules
+bot_template
 .env
+database.sqlite

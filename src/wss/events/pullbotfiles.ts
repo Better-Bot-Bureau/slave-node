@@ -4,7 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { open } from "yauzl"
 import { Transform } from "node:stream"
-
+import { exec } from "node:child_process"
+ 
 let oc2: any
 import("@octokit/rest").then((mod) => {
   oc2 = mod.Octokit
@@ -73,18 +74,22 @@ module.exports = {
         function incrementHandleCount() {
           handleCount++;
         }
-        function decrementHandleCount() {
+        async function decrementHandleCount() {
           handleCount--;
           if (handleCount === 0) {
             console.log("all input and output handles closed");
             let rootDir: string = path.join(__dirname, "../../../")
             let renamePath: string = path.join(rootDir, renamedir)
             let newName: string = path.join(rootDir, "bot_template")
+           
             fs.rm(path.join(rootDir, "repo.zip"),(err) => {
               if(err) console.log(err)
             })
-
+          
             fs.renameSync(renamePath, newName)
+            await exec('yarn install', {cwd: newName})
+         
+            socket.emit("node_ready")
           }
         }
       

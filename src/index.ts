@@ -24,7 +24,7 @@ setInterval(async () => {
         missed_heartbeats +=1
 
     }else if (missed_heartbeats <= 4){
-
+        socket.emit("killing_node")
         await processManager.terminateAllProcesses()
         process.exit()
 
@@ -63,6 +63,6 @@ socket.on("terminate", async () => {
 
 /*
 To-Do:
-[] Setup bot hosting 
+[X] Setup bot hosting 
 [X] Finish heartbeat (hosted bots, bot ids,  cpu usage, ram usage)
 */
